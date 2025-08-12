@@ -1,0 +1,602 @@
+{
+ "Resources": {
+  "MyVpcF9F0CA6F": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkStack/MyVpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/Resource"
+   }
+  },
+  "MyVpcPublicSubnet1SubnetF6608456": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "CidrBlock": "10.0.0.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkStack/MyVpc/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/PublicSubnet1/Subnet"
+   }
+  },
+  "MyVpcPublicSubnet1RouteTableC46AB2F4": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkStack/MyVpc/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/PublicSubnet1/RouteTable"
+   }
+  },
+  "MyVpcPublicSubnet1RouteTableAssociation2ECEE1CB": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "MyVpcPublicSubnet1RouteTableC46AB2F4"
+    },
+    "SubnetId": {
+     "Ref": "MyVpcPublicSubnet1SubnetF6608456"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/PublicSubnet1/RouteTableAssociation"
+   }
+  },
+  "MyVpcPublicSubnet1DefaultRoute95FDF9EB": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "MyVpcIGW5C4A4F63"
+    },
+    "RouteTableId": {
+     "Ref": "MyVpcPublicSubnet1RouteTableC46AB2F4"
+    }
+   },
+   "DependsOn": [
+    "MyVpcVPCGW488ACE0D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/PublicSubnet1/DefaultRoute"
+   }
+  },
+  "MyVpcPublicSubnet2Subnet492B6BFB": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1b",
+    "CidrBlock": "10.0.1.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkStack/MyVpc/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/PublicSubnet2/Subnet"
+   }
+  },
+  "MyVpcPublicSubnet2RouteTable1DF17386": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkStack/MyVpc/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/PublicSubnet2/RouteTable"
+   }
+  },
+  "MyVpcPublicSubnet2RouteTableAssociation227DE78D": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "MyVpcPublicSubnet2RouteTable1DF17386"
+    },
+    "SubnetId": {
+     "Ref": "MyVpcPublicSubnet2Subnet492B6BFB"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/PublicSubnet2/RouteTableAssociation"
+   }
+  },
+  "MyVpcPublicSubnet2DefaultRoute052936F6": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "MyVpcIGW5C4A4F63"
+    },
+    "RouteTableId": {
+     "Ref": "MyVpcPublicSubnet2RouteTable1DF17386"
+    }
+   },
+   "DependsOn": [
+    "MyVpcVPCGW488ACE0D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/PublicSubnet2/DefaultRoute"
+   }
+  },
+  "MyVpcIGW5C4A4F63": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkStack/MyVpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/IGW"
+   }
+  },
+  "MyVpcVPCGW488ACE0D": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "InternetGatewayId": {
+     "Ref": "MyVpcIGW5C4A4F63"
+    },
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/VPCGW"
+   }
+  },
+  "MyVpcRestrictDefaultSecurityGroupCustomResourceA4FCCD62": {
+   "Type": "Custom::VpcRestrictDefaultSG",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E",
+      "Arn"
+     ]
+    },
+    "DefaultSecurityGroupId": {
+     "Fn::GetAtt": [
+      "MyVpcF9F0CA6F",
+      "DefaultSecurityGroup"
+     ]
+    },
+    "Account": "277820847732"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/RestrictDefaultSecurityGroupCustomResource/Default"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyName": "Inline",
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Action": [
+          "ec2:AuthorizeSecurityGroupIngress",
+          "ec2:AuthorizeSecurityGroupEgress",
+          "ec2:RevokeSecurityGroupIngress",
+          "ec2:RevokeSecurityGroupEgress"
+         ],
+         "Resource": [
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:aws:ec2:us-east-1:277820847732:security-group/",
+             {
+              "Fn::GetAtt": [
+               "MyVpcF9F0CA6F",
+               "DefaultSecurityGroup"
+              ]
+             }
+            ]
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-277820847732-us-east-1",
+     "S3Key": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "__entrypoint__.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Description": "Lambda function for removing all inbound/outbound rules from the VPC default security group"
+   },
+   "DependsOn": [
+    "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
+    "aws:asset:property": "Code"
+   }
+  },
+  "MySecurityGroupAC8D442C": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "MyEc2CdkStack/MySecurityGroup",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow RDP",
+      "FromPort": 3389,
+      "IpProtocol": "tcp",
+      "ToPort": 3389
+     },
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow SSH",
+      "FromPort": 22,
+      "IpProtocol": "tcp",
+      "ToPort": 22
+     },
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow HTTP",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     },
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow HTTPS",
+      "FromPort": 443,
+      "IpProtocol": "tcp",
+      "ToPort": 443
+     },
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow ICMP ping",
+      "FromPort": 8,
+      "IpProtocol": "icmp",
+      "ToPort": -1
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MySecurityGroup/Resource"
+   }
+  },
+  "Ec2Role2FD9A272": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ec2.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonSSMManagedInstanceCore"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AWSCodeDeployFullAccess"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/Ec2Role/Resource"
+   }
+  },
+  "Ec2RoleDefaultPolicy99BC91F7": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetObject",
+        "s3:ListBucket"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        "arn:aws:s3:::sergeicvbucket",
+        "arn:aws:s3:::sergeicvbucket/*"
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "Ec2RoleDefaultPolicy99BC91F7",
+    "Roles": [
+     {
+      "Ref": "Ec2Role2FD9A272"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/Ec2Role/DefaultPolicy/Resource"
+   }
+  },
+  "MyWindowsInstanceInstanceProfile220FD762": {
+   "Type": "AWS::IAM::InstanceProfile",
+   "Properties": {
+    "Roles": [
+     {
+      "Ref": "Ec2Role2FD9A272"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyWindowsInstance/InstanceProfile"
+   }
+  },
+  "MyWindowsInstanceD2DD5DE5": {
+   "Type": "AWS::EC2::Instance",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "IamInstanceProfile": {
+     "Ref": "MyWindowsInstanceInstanceProfile220FD762"
+    },
+    "ImageId": {
+     "Ref": "SsmParameterValueawsserviceamiwindowslatestWindowsServer2019EnglishFullBaseC96584B6F00A464EAD1953AFF4B05118Parameter"
+    },
+    "InstanceType": "t3.micro",
+    "KeyName": "my-key-pair",
+    "SecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "MySecurityGroupAC8D442C",
+       "GroupId"
+      ]
+     }
+    ],
+    "SubnetId": {
+     "Ref": "MyVpcPublicSubnet1SubnetF6608456"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MyWindowsInstance"
+     }
+    ],
+    "UserData": {
+     "Fn::Base64": "<powershell>netsh advfirewall set allprofiles state off\nEnable-PSRemoting -Force\nSet-ItemProperty -Path 'HKLM:\\\\System\\\\CurrentControlSet\\\\Control\\\\Terminal Server' -Name 'fDenyTSConnections' -Value 0\nEnable-NetFirewallRule -DisplayGroup 'Remote Desktop'\nRestart-Service TermService\nInstall-WindowsFeature -Name Web-Server -IncludeManagementTools\nInstall-WindowsFeature -Name NET-Framework-45-Core\nStart-Sleep -Seconds 10\nif (!(Test-Path 'C:\\inetpub\\wwwroot\\sergei')) {\n    echo Creating folder sergei >> C:\\setup.log\n    New-Item -Path 'C:\\inetpub\\wwwroot\\sergei' -ItemType Directory -Force\n}\n$ErrorActionPreference = 'Stop';\nInvoke-WebRequest -Uri 'https://awscli.amazonaws.com/AWSCLIV2.msi' -OutFile 'C:\\AWSCLIV2.msi' -UseBasicParsing\nStart-Process -FilePath 'C:\\AWSCLIV2.msi' -ArgumentList '/quiet /norestart' -Wait\n[System.Environment]::SetEnvironmentVariable('Path', $env:Path + ';C:\\Program Files\\Amazon\\AWSCLIV2;C:\\Windows\\System32\\inetsrv', [System.EnvironmentVariableTarget]::Machine)\nStart-Sleep -Seconds 20\naws s3 cp s3://sergeicvbucket C:\\inetpub\\wwwroot\\sergei\\ --recursive --region us-east-1\nStart-Sleep -Seconds 20Import-Module WebAdministrationSet-ItemProperty 'IIS:\\Sites\\Default Web Site' -Name physicalPath -Value 'C:\\inetpub\\wwwroot\\sergei' >> C:\\\\iis.log 2>&1iisreset</powershell>"
+    }
+   },
+   "DependsOn": [
+    "Ec2RoleDefaultPolicy99BC91F7",
+    "Ec2Role2FD9A272"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyWindowsInstance/Resource"
+   }
+  },
+  "MyElasticIP": {
+   "Type": "AWS::EC2::EIP",
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyElasticIP"
+   }
+  },
+  "EIPAssociation": {
+   "Type": "AWS::EC2::EIPAssociation",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "MyElasticIP",
+      "AllocationId"
+     ]
+    },
+    "InstanceId": {
+     "Ref": "MyWindowsInstanceD2DD5DE5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/EIPAssociation"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/+1UyW7bMBD9lvAYMGoWNCh8U9wiENDAgm3kUMMIxtTYZk0NVS52VcH/XlCUbNdpLwUK5NATh4/Dx8fZbpObD++T6wvY2StRbK6UXCTNxIHYcNjZlwbFbdI8V2LWsBK+pz8sG7BLxpn1C0I31LSUK2/ASU1sMGsYQYm/uEzrKgC5XygpGGdCFuYJ7KZ12s/3cz5c0nM+5NFj0l6aNQy2IBUspJKu/qKpJ91WIis6O1A9KC023b6EKpJk1Yg+gyexZgNnPHImq+398MwdrJUryqrtfVoUBq0d0dBg95Ugjr8RFW9GyNtQEUsmFkqwxto7nMJC4RE/Yqm1WsiW4OAcjIwcGkL3CA53UHdV2O1S50CsSyTHJyi8ka5+NNpXsyb8tZeqlN6lSo28W2hPRfxWG6aiyGgV1I+9wrYvBFBGShJGJAZAaCIUQVrfVp7kN49dMNvUt/Alm//n/ce8sapOs80zsg5I4KxhsjO7cRYrW6wlYVbC6qQROmuDdQ7SdDuj1WEqnr7Qq7JoPoKDI0usYssGzW/H6D6q7fUF+1OWd8tJxe+5hDJpxlqFP4C1vsTioQ60lZEkZAUqFUJ7csf+8yWGC6k4Nl0X9CcgWGGRayVF3Ya9PEVSQ/1U/zv/qT66noK91FenbZvGvB/ODkXyx8N5HAQKecQDergw1eM2WWc8r+GimDhwGIaE7SS1xJHzND250UupcL/nY7TaG4EtCx9663R5hi2pB87Oc6O3skDzABZ5ai26iYOVpFX7KBgo0aEJm5F3lXd7ntdurendXXJzl1xffLVSXhlPTpaYjOP6E9XS1zz+BwAA"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Parameters": {
+  "SsmParameterValueawsserviceamiwindowslatestWindowsServer2019EnglishFullBaseC96584B6F00A464EAD1953AFF4B05118Parameter": {
+   "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+   "Default": "/aws/service/ami-windows-latest/Windows_Server-2019-English-Full-Base"
+  },
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Outputs": {
+  "InstancePublicIP": {
+   "Value": {
+    "Fn::GetAtt": [
+     "MyElasticIP",
+     "PublicIp"
+    ]
+   }
+  },
+  "InstanceId": {
+   "Value": {
+    "Ref": "MyWindowsInstanceD2DD5DE5"
+   }
+  },
+  "TestWebsiteUrl": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "http://",
+      {
+       "Fn::GetAtt": [
+        "MyElasticIP",
+        "PublicIp"
+       ]
+      }
+     ]
+    ]
+   }
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
