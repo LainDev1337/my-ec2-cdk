@@ -14,5 +14,9 @@
     "us-east-1d",
     "us-east-1e",
     "us-east-1f"
-  ]
+  ],
+  "hosted-zone:account=277820847732:domainName=sergeikorwin.com:region=us-east-1": {
+    "Id": "/hostedzone/Z03074701SLAU1H8MSQFB",
+    "Name": "sergeikorwin.com."
+  }
 }

@@ -22,7 +22,7 @@
    "Type": "AWS::EC2::Subnet",
    "Properties": {
     "AvailabilityZone": "us-east-1a",
-    "CidrBlock": "10.0.0.0/24",
+    "CidrBlock": "10.0.0.0/18",
     "MapPublicIpOnLaunch": true,
     "Tags": [
      {
@@ -95,11 +95,53 @@
     "aws:cdk:path": "MyEc2CdkStack/MyVpc/PublicSubnet1/DefaultRoute"
    }
   },
+  "MyVpcPublicSubnet1EIP096967CB": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkStack/MyVpc/PublicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/PublicSubnet1/EIP"
+   }
+  },
+  "MyVpcPublicSubnet1NATGatewayAD3400C1": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "MyVpcPublicSubnet1EIP096967CB",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "MyVpcPublicSubnet1SubnetF6608456"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkStack/MyVpc/PublicSubnet1"
+     }
+    ]
+   },
+   "DependsOn": [
+    "MyVpcPublicSubnet1DefaultRoute95FDF9EB",
+    "MyVpcPublicSubnet1RouteTableAssociation2ECEE1CB"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/PublicSubnet1/NATGateway"
+   }
+  },
   "MyVpcPublicSubnet2Subnet492B6BFB": {
    "Type": "AWS::EC2::Subnet",
    "Properties": {
     "AvailabilityZone": "us-east-1b",
-    "CidrBlock": "10.0.1.0/24",
+    "CidrBlock": "10.0.64.0/18",
     "MapPublicIpOnLaunch": true,
     "Tags": [
      {
@@ -170,6 +212,196 @@
    ],
    "Metadata": {
     "aws:cdk:path": "MyEc2CdkStack/MyVpc/PublicSubnet2/DefaultRoute"
+   }
+  },
+  "MyVpcPublicSubnet2EIP8CCBA239": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkStack/MyVpc/PublicSubnet2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/PublicSubnet2/EIP"
+   }
+  },
+  "MyVpcPublicSubnet2NATGateway91BFBEC9": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "MyVpcPublicSubnet2EIP8CCBA239",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "MyVpcPublicSubnet2Subnet492B6BFB"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkStack/MyVpc/PublicSubnet2"
+     }
+    ]
+   },
+   "DependsOn": [
+    "MyVpcPublicSubnet2DefaultRoute052936F6",
+    "MyVpcPublicSubnet2RouteTableAssociation227DE78D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/PublicSubnet2/NATGateway"
+   }
+  },
+  "MyVpcPrivateSubnet1Subnet5057CF7E": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "CidrBlock": "10.0.128.0/18",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkStack/MyVpc/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/PrivateSubnet1/Subnet"
+   }
+  },
+  "MyVpcPrivateSubnet1RouteTable8819E6E2": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkStack/MyVpc/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/PrivateSubnet1/RouteTable"
+   }
+  },
+  "MyVpcPrivateSubnet1RouteTableAssociation56D38C7E": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "MyVpcPrivateSubnet1RouteTable8819E6E2"
+    },
+    "SubnetId": {
+     "Ref": "MyVpcPrivateSubnet1Subnet5057CF7E"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/PrivateSubnet1/RouteTableAssociation"
+   }
+  },
+  "MyVpcPrivateSubnet1DefaultRouteA8CDE2FA": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "MyVpcPublicSubnet1NATGatewayAD3400C1"
+    },
+    "RouteTableId": {
+     "Ref": "MyVpcPrivateSubnet1RouteTable8819E6E2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/PrivateSubnet1/DefaultRoute"
+   }
+  },
+  "MyVpcPrivateSubnet2Subnet0040C983": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1b",
+    "CidrBlock": "10.0.192.0/18",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkStack/MyVpc/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/PrivateSubnet2/Subnet"
+   }
+  },
+  "MyVpcPrivateSubnet2RouteTableCEDCEECE": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkStack/MyVpc/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/PrivateSubnet2/RouteTable"
+   }
+  },
+  "MyVpcPrivateSubnet2RouteTableAssociation86A610DA": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "MyVpcPrivateSubnet2RouteTableCEDCEECE"
+    },
+    "SubnetId": {
+     "Ref": "MyVpcPrivateSubnet2Subnet0040C983"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/PrivateSubnet2/RouteTableAssociation"
+   }
+  },
+  "MyVpcPrivateSubnet2DefaultRoute9CE96294": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "MyVpcPublicSubnet2NATGateway91BFBEC9"
+    },
+    "RouteTableId": {
+     "Ref": "MyVpcPrivateSubnet2RouteTableCEDCEECE"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/MyVpc/PrivateSubnet2/DefaultRoute"
    }
   },
   "MyVpcIGW5C4A4F63": {
@@ -311,10 +543,10 @@
     "aws:asset:property": "Code"
    }
   },
-  "MySecurityGroupAC8D442C": {
+  "AlbSGE6D0E5D1": {
    "Type": "AWS::EC2::SecurityGroup",
    "Properties": {
-    "GroupDescription": "MyEc2CdkStack/MySecurityGroup",
+    "GroupDescription": "MyEc2CdkStack/AlbSG",
     "SecurityGroupEgress": [
      {
       "CidrIp": "0.0.0.0/0",
@@ -325,38 +557,17 @@
     "SecurityGroupIngress": [
      {
       "CidrIp": "0.0.0.0/0",
-      "Description": "Allow RDP",
-      "FromPort": 3389,
-      "IpProtocol": "tcp",
-      "ToPort": 3389
-     },
-     {
-      "CidrIp": "0.0.0.0/0",
-      "Description": "Allow SSH",
-      "FromPort": 22,
-      "IpProtocol": "tcp",
-      "ToPort": 22
-     },
-     {
-      "CidrIp": "0.0.0.0/0",
-      "Description": "Allow HTTP",
+      "Description": "from 0.0.0.0/0:80",
       "FromPort": 80,
       "IpProtocol": "tcp",
       "ToPort": 80
      },
      {
       "CidrIp": "0.0.0.0/0",
-      "Description": "Allow HTTPS",
+      "Description": "from 0.0.0.0/0:443",
       "FromPort": 443,
       "IpProtocol": "tcp",
       "ToPort": 443
-     },
-     {
-      "CidrIp": "0.0.0.0/0",
-      "Description": "Allow ICMP ping",
-      "FromPort": 8,
-      "IpProtocol": "icmp",
-      "ToPort": -1
      }
     ],
     "VpcId": {
@@ -364,7 +575,59 @@
     }
    },
    "Metadata": {
-    "aws:cdk:path": "MyEc2CdkStack/MySecurityGroup/Resource"
+    "aws:cdk:path": "MyEc2CdkStack/AlbSG/Resource"
+   }
+  },
+  "InstanceSG2AE1100C": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "MyEc2CdkStack/InstanceSG",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "from 0.0.0.0/0:3389",
+      "FromPort": 3389,
+      "IpProtocol": "tcp",
+      "ToPort": 3389
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/InstanceSG/Resource"
+   }
+  },
+  "InstanceSGfromMyEc2CdkStackAlbSG24EA88A280D8D82874": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "from MyEc2CdkStackAlbSG24EA88A2:80",
+    "FromPort": 80,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "InstanceSG2AE1100C",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "AlbSGE6D0E5D1",
+      "GroupId"
+     ]
+    },
+    "ToPort": 80
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/InstanceSG/from MyEc2CdkStackAlbSG24EA88A2:80"
    }
   },
   "Ec2Role2FD9A272": {
@@ -392,18 +655,6 @@
          "Ref": "AWS::Partition"
         },
         ":iam::aws:policy/AmazonSSMManagedInstanceCore"
-       ]
-      ]
-     },
-     {
-      "Fn::Join": [
-       "",
-       [
-        "arn:",
-        {
-         "Ref": "AWS::Partition"
-        },
-        ":iam::aws:policy/AWSCodeDeployFullAccess"
        ]
       ]
      }
@@ -471,7 +722,7 @@
     "SecurityGroupIds": [
      {
       "Fn::GetAtt": [
-       "MySecurityGroupAC8D442C",
+       "InstanceSG2AE1100C",
        "GroupId"
       ]
      }
@@ -486,7 +737,7 @@
      }
     ],
     "UserData": {
-     "Fn::Base64": "<powershell>netsh advfirewall set allprofiles state off\nEnable-PSRemoting -Force\nSet-ItemProperty -Path 'HKLM:\\\\System\\\\CurrentControlSet\\\\Control\\\\Terminal Server' -Name 'fDenyTSConnections' -Value 0\nEnable-NetFirewallRule -DisplayGroup 'Remote Desktop'\nRestart-Service TermService\nInstall-WindowsFeature -Name Web-Server -IncludeManagementTools\nInstall-WindowsFeature -Name NET-Framework-45-Core\nStart-Sleep -Seconds 10\nif (!(Test-Path 'C:\\inetpub\\wwwroot\\sergei')) {\n    echo Creating folder sergei >> C:\\setup.log\n    New-Item -Path 'C:\\inetpub\\wwwroot\\sergei' -ItemType Directory -Force\n}\n$ErrorActionPreference = 'Stop';\nInvoke-WebRequest -Uri 'https://awscli.amazonaws.com/AWSCLIV2.msi' -OutFile 'C:\\AWSCLIV2.msi' -UseBasicParsing\nStart-Process -FilePath 'C:\\AWSCLIV2.msi' -ArgumentList '/quiet /norestart' -Wait\n[System.Environment]::SetEnvironmentVariable('Path', $env:Path + ';C:\\Program Files\\Amazon\\AWSCLIV2;C:\\Windows\\System32\\inetsrv', [System.EnvironmentVariableTarget]::Machine)\nStart-Sleep -Seconds 20\naws s3 cp s3://sergeicvbucket C:\\inetpub\\wwwroot\\sergei\\ --recursive --region us-east-1\nStart-Sleep -Seconds 20Import-Module WebAdministrationSet-ItemProperty 'IIS:\\Sites\\Default Web Site' -Name physicalPath -Value 'C:\\inetpub\\wwwroot\\sergei' >> C:\\\\iis.log 2>&1iisreset</powershell>"
+     "Fn::Base64": "<powershell>powershell -Command \"[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force\"\nnetsh advfirewall set allprofiles state off\nEnable-PSRemoting -Force\nSet-ItemProperty -Path 'HKLM:\\\\System\\\\CurrentControlSet\\\\Control\\\\Terminal Server' -Name 'fDenyTSConnections' -Value 0\nInstall-WindowsFeature -Name Web-Server -IncludeManagementTools\nInstall-WindowsFeature -Name NET-Framework-45-Core\nStart-Sleep -Seconds 10\n# Install Git (silent) with User-Agent to avoid blocking\nInvoke-WebRequest -Uri 'https://github.com/git-for-windows/git/releases/download/v2.45.1.windows.1/Git-2.45.1-64-bit.exe' -OutFile 'C:\\Git-Setup.exe' -Headers @{ 'User-Agent' = 'Mozilla/5.0 (Windows NT)' }\nStart-Process -FilePath 'C:\\Git-Setup.exe' -ArgumentList '/VERYSILENT','/NORESTART' -Wait -NoNewWindow\nsetx PATH ($env:PATH + ';C:\\Program Files\\Git\\cmd') /M\nStart-Sleep -Seconds 5\n# Install AWS CLI\nInvoke-WebRequest -Uri 'https://awscli.amazonaws.com/AWSCLIV2.msi' -OutFile 'C:\\AWSCLIV2.msi' -Headers @{ 'User-Agent' = 'Mozilla/5.0 (Windows NT)' }\nStart-Process -FilePath 'C:\\Windows\\System32\\msiexec.exe' -ArgumentList '/i','C:\\AWSCLIV2.msi','/qn','/norestart' -Wait -NoNewWindow\nsetx PATH ($env:PATH + ';C:\\Program Files\\Amazon\\AWSCLIV2') /M\nStart-Sleep -Seconds 5\n# Clone website directly into wwwroot (no sergei folder)\ncd C:\\inetpub\\wwwroot\nif (!(Test-Path '.git')) { if (Test-Path 'C:\\Program Files\\Git\\cmd\\git.exe') { & 'C:\\Program Files\\Git\\cmd\\git.exe' clone https://github.com/LainDev1337/MyWebsiteRepo.git . } else { Write-Output 'git not found' >> C:\\setup.log } }\nImport-Module WebAdministration\nSet-ItemProperty 'IIS:\\\\Sites\\\\Default Web Site' -Name physicalPath -Value 'C:\\\\inetpub\\\\wwwroot'\niisreset</powershell>"
     }
    },
    "DependsOn": [
@@ -497,33 +748,226 @@
     "aws:cdk:path": "MyEc2CdkStack/MyWindowsInstance/Resource"
    }
   },
-  "MyElasticIP": {
-   "Type": "AWS::EC2::EIP",
+  "SiteCert6025247C": {
+   "Type": "AWS::CertificateManager::Certificate",
+   "Properties": {
+    "DomainName": "sergeikorwin.com",
+    "DomainValidationOptions": [
+     {
+      "DomainName": "sergeikorwin.com",
+      "HostedZoneId": "Z03074701SLAU1H8MSQFB"
+     },
+     {
+      "DomainName": "www.sergeikorwin.com",
+      "HostedZoneId": "Z03074701SLAU1H8MSQFB"
+     }
+    ],
+    "SubjectAlternativeNames": [
+     "www.sergeikorwin.com"
+    ],
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkStack/SiteCert"
+     }
+    ],
+    "ValidationMethod": "DNS"
+   },
    "Metadata": {
-    "aws:cdk:path": "MyEc2CdkStack/MyElasticIP"
+    "aws:cdk:path": "MyEc2CdkStack/SiteCert/Resource"
    }
   },
-  "EIPAssociation": {
-   "Type": "AWS::EC2::EIPAssociation",
+  "PublicALB3DD254D4": {
+   "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
    "Properties": {
-    "AllocationId": {
-     "Fn::GetAtt": [
-      "MyElasticIP",
-      "AllocationId"
-     ]
+    "LoadBalancerAttributes": [
+     {
+      "Key": "deletion_protection.enabled",
+      "Value": "false"
+     }
+    ],
+    "Scheme": "internet-facing",
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "AlbSGE6D0E5D1",
+       "GroupId"
+      ]
+     }
+    ],
+    "Subnets": [
+     {
+      "Ref": "MyVpcPublicSubnet1SubnetF6608456"
+     },
+     {
+      "Ref": "MyVpcPublicSubnet2Subnet492B6BFB"
+     }
+    ],
+    "Type": "application"
+   },
+   "DependsOn": [
+    "MyVpcPublicSubnet1DefaultRoute95FDF9EB",
+    "MyVpcPublicSubnet1RouteTableAssociation2ECEE1CB",
+    "MyVpcPublicSubnet2DefaultRoute052936F6",
+    "MyVpcPublicSubnet2RouteTableAssociation227DE78D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/PublicALB/Resource"
+   }
+  },
+  "PublicALBHttpListener346B05A4": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "DefaultActions": [
+     {
+      "RedirectConfig": {
+       "Port": "443",
+       "Protocol": "HTTPS",
+       "StatusCode": "HTTP_301"
+      },
+      "Type": "redirect"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "PublicALB3DD254D4"
     },
-    "InstanceId": {
-     "Ref": "MyWindowsInstanceD2DD5DE5"
+    "Port": 80,
+    "Protocol": "HTTP"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/PublicALB/HttpListener/Resource"
+   }
+  },
+  "PublicALBHttpsListenerD824DC80": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "Certificates": [
+     {
+      "CertificateArn": {
+       "Ref": "SiteCert6025247C"
+      }
+     }
+    ],
+    "DefaultActions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "PublicALBHttpsListenerEC2TargetGroupE0AA7B87"
+      },
+      "Type": "forward"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "PublicALB3DD254D4"
+    },
+    "Port": 443,
+    "Protocol": "HTTPS"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/PublicALB/HttpsListener/Resource"
+   }
+  },
+  "PublicALBHttpsListenerEC2TargetGroupE0AA7B87": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "HealthCheckPath": "/",
+    "Matcher": {
+     "HttpCode": "200-399"
+    },
+    "Port": 80,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "TargetType": "instance",
+    "Targets": [
+     {
+      "Id": {
+       "Ref": "MyWindowsInstanceD2DD5DE5"
+      },
+      "Port": 80
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
     }
    },
    "Metadata": {
-    "aws:cdk:path": "MyEc2CdkStack/EIPAssociation"
+    "aws:cdk:path": "MyEc2CdkStack/PublicALB/HttpsListener/EC2TargetGroup/Resource"
+   }
+  },
+  "RootAliasCB7F041A": {
+   "Type": "AWS::Route53::RecordSet",
+   "Properties": {
+    "AliasTarget": {
+     "DNSName": {
+      "Fn::Join": [
+       "",
+       [
+        "dualstack.",
+        {
+         "Fn::GetAtt": [
+          "PublicALB3DD254D4",
+          "DNSName"
+         ]
+        }
+       ]
+      ]
+     },
+     "HostedZoneId": {
+      "Fn::GetAtt": [
+       "PublicALB3DD254D4",
+       "CanonicalHostedZoneID"
+      ]
+     }
+    },
+    "HostedZoneId": "Z03074701SLAU1H8MSQFB",
+    "Name": "sergeikorwin.com.",
+    "Type": "A"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/RootAlias/Resource"
+   }
+  },
+  "WWWAlias3083E442": {
+   "Type": "AWS::Route53::RecordSet",
+   "Properties": {
+    "AliasTarget": {
+     "DNSName": {
+      "Fn::Join": [
+       "",
+       [
+        "dualstack.",
+        {
+         "Fn::GetAtt": [
+          "PublicALB3DD254D4",
+          "DNSName"
+         ]
+        }
+       ]
+      ]
+     },
+     "HostedZoneId": {
+      "Fn::GetAtt": [
+       "PublicALB3DD254D4",
+       "CanonicalHostedZoneID"
+      ]
+     }
+    },
+    "HostedZoneId": "Z03074701SLAU1H8MSQFB",
+    "Name": "www.sergeikorwin.com.",
+    "Type": "A"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkStack/WWWAlias/Resource"
    }
   },
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/+1UyW7bMBD9lvAYMGoWNCh8U9wiENDAgm3kUMMIxtTYZk0NVS52VcH/XlCUbNdpLwUK5NATh4/Dx8fZbpObD++T6wvY2StRbK6UXCTNxIHYcNjZlwbFbdI8V2LWsBK+pz8sG7BLxpn1C0I31LSUK2/ASU1sMGsYQYm/uEzrKgC5XygpGGdCFuYJ7KZ12s/3cz5c0nM+5NFj0l6aNQy2IBUspJKu/qKpJ91WIis6O1A9KC023b6EKpJk1Yg+gyexZgNnPHImq+398MwdrJUryqrtfVoUBq0d0dBg95Ugjr8RFW9GyNtQEUsmFkqwxto7nMJC4RE/Yqm1WsiW4OAcjIwcGkL3CA53UHdV2O1S50CsSyTHJyi8ka5+NNpXsyb8tZeqlN6lSo28W2hPRfxWG6aiyGgV1I+9wrYvBFBGShJGJAZAaCIUQVrfVp7kN49dMNvUt/Alm//n/ce8sapOs80zsg5I4KxhsjO7cRYrW6wlYVbC6qQROmuDdQ7SdDuj1WEqnr7Qq7JoPoKDI0usYssGzW/H6D6q7fUF+1OWd8tJxe+5hDJpxlqFP4C1vsTioQ60lZEkZAUqFUJ7csf+8yWGC6k4Nl0X9CcgWGGRayVF3Ya9PEVSQ/1U/zv/qT66noK91FenbZvGvB/ODkXyx8N5HAQKecQDergw1eM2WWc8r+GimDhwGIaE7SS1xJHzND250UupcL/nY7TaG4EtCx9663R5hi2pB87Oc6O3skDzABZ5ai26iYOVpFX7KBgo0aEJm5F3lXd7ntdurendXXJzl1xffLVSXhlPTpaYjOP6E9XS1zz+BwAA"
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/9VWW0/bMBT+LeRxCtkAgSbe0m5CkRhUbcXDEJpc+7Q1dezMdsJK1f++40uaAEKa2EXdU5xz/XLOd45znB19PM0+HJAHc0jZ6lDwWbaZWEJXKYq+bYAeZ5ubit5ukpL8yB9Ncp68S7Z36XAub0bDdFTPBKeTeibBog1pCBdkxgW3669KgrdOk6aiBYtnypkeCEVX8b0kVQhSVNfyktSSLpNzq2tIE141Z8Nn5sQYvpAFanLGNBhzLYcaiOVKBmjpnqDwQBi7IvaCWHgg6+T8FjV3ewNwP1C8WiZPsUAsdxqr2sKUzAR08k6WG6Mo94F3xu7wuRi5Rxc9HWne4PGPM3ZOhNmDXvwejP1BsicwAgsLaUEjXVoOhd0X33KL23JZgrTpBGitEe+FVnWF3EKwbSoh1EMuxHVtZ6qWLAxN5H4hFy77uBb4lehGCWYUXEKQhPGiSkqgDpuJMWvJv9cQq+Gb58XtivlP4vr+/OXIb+qDs/8XNQ17rs+cF4KYNC2ksURSwLw8HqfrCnb0p0sEUpRk0ZuWeFrB+oqUrVwr0R5NP1GL1oD+RCzpooR1iV+zSYw/xrxh3pJtOycB1DblpMw2Y8ziNqwxdQlssHbeleaS8oqInFJsgO1GEW2cQ067+Ys1/0IkfhIbKUy19lUv+5JcR/O2R1PVmfaFbeoXWj/BoY073a7nryrvwk2DF1KQB8ZEh6kaq5ZGvTgvxYzh35YFtz9MhOQDh5j9qo60mnOBxaWgLZ9z6tx8IXS2GXYyrA9TJeGy13Bs2j0yMhdukeGGa8ApW3Y2RHDW23seQC/iNgVBjOVUKMJmRCAaLhcN/hnmVSWcCbpeom7gdaBvI7s9w12wvjLtO3FjQT51eOoYDfpOU6IXuIzbUem9blPtbv7TE0Q2Bqo0w2I8dreH9aa7O+aXNNrH6dXyjaaBLt5iAha5PQajao3THL61NlaVz2TOIQie6ZELDWegBwQvN/z5AYssWmBTPHWIRgjYafeCm66q7TYdre1Syfcn2dFJdnZwbzg/1Dh/vIRsHJ4/AW+bN5wLDAAA"
    },
    "Metadata": {
     "aws:cdk:path": "MyEc2CdkStack/CDKMetadata/Default"
@@ -542,33 +986,20 @@
   }
  },
  "Outputs": {
-  "InstancePublicIP": {
+  "ALBDNS": {
    "Value": {
     "Fn::GetAtt": [
-     "MyElasticIP",
-     "PublicIp"
+     "PublicALB3DD254D4",
+     "DNSName"
     ]
    }
+  },
+  "DomainURL": {
+   "Value": "https://sergeikorwin.com"
   },
   "InstanceId": {
    "Value": {
     "Ref": "MyWindowsInstanceD2DD5DE5"
-   }
-  },
-  "TestWebsiteUrl": {
-   "Value": {
-    "Fn::Join": [
-     "",
-     [
-      "http://",
-      {
-       "Fn::GetAtt": [
-        "MyElasticIP",
-        "PublicIp"
-       ]
-      }
-     ]
-    ]
    }
   }
  },
